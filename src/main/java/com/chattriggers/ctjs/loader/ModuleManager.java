@@ -5,6 +5,7 @@ import com.chattriggers.ctjs.minecraft.libs.ChatLib;
 import com.chattriggers.ctjs.modules.Module;
 import com.chattriggers.ctjs.minecraft.objects.KeyBind;
 import com.chattriggers.ctjs.triggers.TriggerType;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import lombok.Getter;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -71,9 +72,13 @@ public class ModuleManager {
         return modules;
     }
 
-    public void invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
+    public void invokeFunction(Object obj, Object... args) throws ScriptException, NoSuchMethodException {
         for (ScriptLoader sl : scriptLoaders) {
-            sl.getInvocableEngine().invokeFunction(name, args);
+            if (obj instanceof String) {
+                sl.getInvocableEngine().invokeFunction(((String) obj), args);
+            } else if (obj instanceof ScriptObjectMirror) {
+                ((ScriptObjectMirror) obj).call(obj, args);
+            }
         }
     }
 

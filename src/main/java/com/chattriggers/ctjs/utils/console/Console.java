@@ -6,7 +6,6 @@ import io.sentry.Sentry;
 import lombok.Getter;
 import net.minecraft.network.ThreadQuickExitException;
 
-import javax.script.ScriptException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -112,7 +111,7 @@ public class Console {
                 "methodBody",
                 body.replace("\n", "<br>")
             );
-        } catch (ScriptException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

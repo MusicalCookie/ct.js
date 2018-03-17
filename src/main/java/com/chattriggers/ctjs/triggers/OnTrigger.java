@@ -8,6 +8,8 @@ public abstract class OnTrigger {
     @Getter
     protected String methodName;
     @Getter
+    protected Object method;
+    @Getter
     protected Priority priority;
     @Getter
     protected TriggerType type;
@@ -16,6 +18,18 @@ public abstract class OnTrigger {
 
     protected OnTrigger(String methodName, TriggerType type) {
         this.methodName = methodName;
+        this.priority = Priority.NORMAL;
+        this.type = type;
+
+        if (TriggerRegister.currentModule != null) {
+            setOwningModule(TriggerRegister.currentModule);
+        }
+
+        this.register();
+    }
+
+    public OnTrigger(Object method, TriggerType type) {
+        this.method = method;
         this.priority = Priority.NORMAL;
         this.type = type;
 

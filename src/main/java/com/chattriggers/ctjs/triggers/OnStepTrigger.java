@@ -12,7 +12,7 @@ public class OnStepTrigger extends OnTrigger {
     private Long systemTime;
     private Long elapsed;
 
-    protected OnStepTrigger(String methodName) {
+    protected OnStepTrigger(Object methodName) {
         super(methodName, TriggerType.STEP);
         this.systemTime = Client.getSystemTime();
         this.elapsed = 0L;
@@ -59,14 +59,14 @@ public class OnStepTrigger extends OnTrigger {
                 // run trigger based on set fps value (60 per second by default)
                 while (this.systemTime < Client.getSystemTime() + (1000 / this.fps)) {
                     this.elapsed++;
-                    CTJS.getInstance().getModuleManager().invokeFunction(this.methodName, this.elapsed);
+                    CTJS.getInstance().getModuleManager().invokeFunction(this.method, this.elapsed);
                     this.systemTime += (1000 / this.fps);
                 }
             } else {
                 // run trigger based on set delay in seconds
                 while (Client.getSystemTime() > this.systemTime + this.delay * 1000) {
                     this.elapsed++;
-                    CTJS.getInstance().getModuleManager().invokeFunction(this.methodName, this.elapsed);
+                    CTJS.getInstance().getModuleManager().invokeFunction(this.method, this.elapsed);
                     this.systemTime += this.delay * 1000;
                 }
 

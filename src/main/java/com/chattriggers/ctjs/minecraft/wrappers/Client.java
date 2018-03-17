@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.lwjgl.input.Mouse;
@@ -197,6 +198,22 @@ public class Client {
 
     public static boolean isInGui() {
         return gui.get() != null;
+    }
+
+    public static RenderManager getRenderManager() {
+        return Client.getMinecraft().getRenderManager();
+    }
+
+    public static double getRenderX() {
+        return getRenderManager().viewerPosX;
+    }
+
+    public static double getRenderY() {
+        return getRenderManager().viewerPosY;
+    }
+
+    public static double getRenderZ() {
+        return getRenderManager().viewerPosZ;
     }
 
     /**

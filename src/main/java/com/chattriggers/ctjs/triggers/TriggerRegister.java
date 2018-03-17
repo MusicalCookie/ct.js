@@ -2,11 +2,12 @@ package com.chattriggers.ctjs.triggers;
 
 import com.chattriggers.ctjs.modules.Module;
 import com.chattriggers.ctjs.utils.console.Console;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class TriggerRegister {
+public class  TriggerRegister {
     public static Module currentModule = null;
 
     /**
@@ -39,6 +40,10 @@ public class TriggerRegister {
             Console.getConsole().printStackTrace(e);
             return null;
         }
+    }
+
+    public static OnStepTrigger register(ScriptObjectMirror obj) {
+        return new OnStepTrigger(obj);
     }
 
     /**
