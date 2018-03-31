@@ -133,7 +133,7 @@ public class Message {
         if (this.recursive) {
             Client.getConnection().handleChat(new S02PacketChat(this.chatMessage, (byte) 0));
         } else {
-            Player.getPlayer().addChatMessage(this.chatMessage);
+            Player.getInstance().getPlayer().addChatMessage(this.chatMessage);
         }
     }
 

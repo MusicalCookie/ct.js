@@ -114,8 +114,8 @@ public class CTJS {
 
         Sentry.getContext().setUser(
             new UserBuilder()
-                .setUsername(Player.getName())
-                .setId(Player.getUUID())
+                .setUsername(Player.getInstance().getName())
+                .setId(Player.getInstance().getUUID())
                 .build()
         );
 

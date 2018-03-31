@@ -3,33 +3,21 @@ package com.chattriggers.ctjs.minecraft.wrappers.objects;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Entity {
-    private net.minecraft.entity.Entity entity;
+    protected net.minecraft.entity.Entity entity;
 
     public Entity(net.minecraft.entity.Entity entity) {
         this.entity = entity;
     }
 
-    /**
-     * @return the entity's x coordinate
-     */
-    public double getX() {
-        return this.entity.posX;
-    }
-
-    /**
-     * @return the entity's y coordinate
-     */
-    public double getY() {
-        return this.entity.posY;
-    }
-
-    /**
-     * @return the entity's z coordinate
-     */
-    public double getZ() {
-        return this.entity.posZ;
+    public Vector3f getLocation() {
+        return new Vector3f(
+                (float) this.entity.posX,
+                (float) this.entity.posY,
+                (float) this.entity.posZ
+        );
     }
 
     /**
@@ -178,9 +166,9 @@ public class Entity {
     public String toString() {
         return "Entity{"
                 + EntityList.getEntityString(this.entity)
-                + ",x:" + getX()
-                + ",y:" + getY()
-                + ",z:" + getZ()
+                + ",x:" + getLocation().x
+                + ",y:" + getLocation().y
+                + ",z:" + getLocation().z
                 + "}";
     }
 }

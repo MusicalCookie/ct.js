@@ -37,7 +37,7 @@ public class World {
      * @param pitch  the pitch of the sound
      */
     public static void playSound(String name, float volume, float pitch) {
-        Player.getPlayer().playSound(name, volume, pitch);
+        Player.getInstance().getPlayer().playSound(name, volume, pitch);
     }
 
     /**

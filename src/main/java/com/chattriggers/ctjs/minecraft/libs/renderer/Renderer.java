@@ -226,7 +226,7 @@ public class Renderer {
         float mouseX = -30;
         float mouseY = 0;
 
-        EntityLivingBase ent = Player.getPlayer();
+        EntityLivingBase ent = Player.getInstance().getPlayer();
         if (player instanceof PlayerMP)
             ent = ((PlayerMP) player).getPlayer();
 

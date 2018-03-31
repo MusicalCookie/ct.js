@@ -34,7 +34,7 @@ var KeyBind = Java.type("com.chattriggers.ctjs.minecraft.objects.KeyBind");
 
 // Wrappers
 var Client = Java.type("com.chattriggers.ctjs.minecraft.wrappers.Client");
-var Player = Java.type("com.chattriggers.ctjs.minecraft.wrappers.Player");
+var Player = Java.type("com.chattriggers.ctjs.minecraft.wrappers.Player").getInstance();
 var World = Java.type("com.chattriggers.ctjs.minecraft.wrappers.World");
 var Server = Java.type("com.chattriggers.ctjs.minecraft.wrappers.Server");
 var Inventory = Java.type("com.chattriggers.ctjs.minecraft.wrappers.objects.Inventory");

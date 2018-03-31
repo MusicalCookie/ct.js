@@ -212,7 +212,7 @@ public class Block {
      * @return whether the block can be mined
      */
     public boolean canBeHarvested() {
-        return this.block.canHarvestBlock(World.getWorld(), this.blockPos, Player.getPlayer());
+        return this.block.canHarvestBlock(World.getWorld(), this.blockPos, Player.getInstance().getPlayer());
     }
 
     /**

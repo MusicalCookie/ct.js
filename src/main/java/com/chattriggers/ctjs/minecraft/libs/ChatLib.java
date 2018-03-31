@@ -66,7 +66,7 @@ public class ChatLib {
     public static void say(String message) {
         if (!isPlayer("[SAY]: " + message)) return;
 
-        Player.getPlayer().sendChatMessage(message);
+        Player.getInstance().getPlayer().sendChatMessage(message);
     }
 
     /**
@@ -77,7 +77,7 @@ public class ChatLib {
     public static void command(String command) {
         if (!isPlayer("[COMMAND]: /" + command)) return;
 
-        Player.getPlayer().sendChatMessage("/" + command);
+        Player.getInstance().getPlayer().sendChatMessage("/" + command);
     }
 
     /**
@@ -269,7 +269,7 @@ public class ChatLib {
 
     // helper method to make sure player exists before putting something in chat
     public Boolean isPlayer(String out) {
-        if (Player.getPlayer() == null) {
+        if (Player.getInstance().getPlayer() == null) {
             CTJS.getInstance().getConsole().out.println(out);
             return false;
         }

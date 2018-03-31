@@ -48,7 +48,7 @@ public class Server {
      * is in a single player world.
      */
     public static Long getPing() {
-        EntityPlayer player = Player.getPlayer();
+        EntityPlayer player = Player.getInstance().getPlayer();
 
         if (player == null
                 || Client.getMinecraft().isSingleplayer()

@@ -5,6 +5,7 @@ import com.chattriggers.ctjs.minecraft.wrappers.objects.Block;
 import com.chattriggers.ctjs.minecraft.wrappers.objects.Entity;
 import com.chattriggers.ctjs.minecraft.wrappers.objects.Inventory;
 import com.chattriggers.ctjs.minecraft.wrappers.objects.Item;
+import lombok.Getter;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.potion.PotionEffect;
@@ -14,75 +15,36 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player extends Entity {
+    @Getter
+    private static Player instance;
 
-    /**
-     * Gets the player object.
-     *
-     * @return the player object
-     */
-    public static EntityPlayerSP getPlayer() {
-        return Client.getMinecraft().thePlayer;
+    @Getter
+    private EntityPlayerSP player;
+    @Getter
+    private Armor armor;
+
+    public Player(EntityPlayerSP player) {
+        super(player);
+        instance = this;
+
+        this.player = player;
+        this.armor = new Armor();
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    /**
-     * Gets the player's x position.
-     *
-     * @return the player's x position
-     */
-    public static double getX() {
-        return getPlayer() == null ? 0 : getPlayer().posX;
-    }
-
-    /**
-     * Gets the player's y position.
-     *
-     * @return the player's y position
-     */
-    public static double getY() {
-        return getPlayer() == null ? 0 : getPlayer().posY;
-    }
-
-    /**
-     * Gets the player's z position.
-     *
-     * @return the player's z position
-     */
-    public static double getZ() {
-        return getPlayer() == null ? 0 : getPlayer().posZ;
-    }
-
-    /**
-     * Gets the player's x motion.
-     * This is the amount the player will move in the x direction next tick.
-     *
-     * @return the player's x motion
-     */
-    public static double getMotionX() {
-        return getPlayer() == null ? 0 : getPlayer().motionX;
-    }
-
-    /**
-     * Gets the player's y motion.
-     * This is the amount the player will move in the y direction next tick.
-     *
-     * @return the player's y motion
-     */
-    public static double getMotionY() {
-        return getPlayer() == null ? 0 : getPlayer().motionY;
-    }
-
-    /**
-     * Gets the player's z motion.
-     * This is the amount the player will move in the z direction next tick.
-     *
-     * @return the player's z motion
-     */
-    public static double getMotionZ() {
-        return getPlayer() == null ? 0 : getPlayer().motionZ;
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load e) {
+        if (player == null) {
+            player = Client.getMinecraft().thePlayer;
+            entity = player;
+        }
     }
 
     /**
@@ -90,8 +52,9 @@ public class Player {
      *
      * @return the player's camera pitch
      */
-    public static float getPitch() {
-        return getPlayer() == null ? 0 : MathHelper.wrapAngleTo180_float(getPlayer().rotationPitch);
+    @Override
+    public double getPitch() {
+        return player == null ? 0 : MathHelper.wrapAngleTo180_float(player.rotationPitch);
     }
 
     /**
@@ -99,8 +62,9 @@ public class Player {
      *
      * @return the player's camera yaw
      */
-    public static float getYaw() {
-        return getPlayer() == null ? 0 : MathHelper.wrapAngleTo180_float(getPlayer().rotationYaw);
+    @Override
+    public double getYaw() {
+        return player == null ? 0 : MathHelper.wrapAngleTo180_float(player.rotationYaw);
     }
 
     /**
@@ -108,7 +72,7 @@ public class Player {
      *
      * @return the player's username
      */
-    public static String getName() {
+    public String getName() {
         return Client.getMinecraft().getSession().getUsername();
     }
 
@@ -117,7 +81,7 @@ public class Player {
      *
      * @return the player's uuid
      */
-    public static String getUUID() {
+    public String getUUID() {
         return Client.getMinecraft().getSession().getProfile().getId().toString();
     }
 
@@ -126,8 +90,8 @@ public class Player {
      *
      * @return the player's hp
      */
-    public static float getHP() {
-        return getPlayer() == null ? 0 : getPlayer().getHealth();
+    public float getHP() {
+        return player == null ? 0 : player.getHealth();
     }
 
     /**
@@ -135,8 +99,8 @@ public class Player {
      *
      * @return the player's hunger
      */
-    public static int getHunger() {
-        return getPlayer() == null ? 0 : getPlayer().getFoodStats().getFoodLevel();
+    public int getHunger() {
+        return player == null ? 0 : player.getFoodStats().getFoodLevel();
     }
 
     /**
@@ -144,8 +108,8 @@ public class Player {
      *
      * @return the player's saturation
      */
-    public static float getSaturation() {
-        return getPlayer() == null ? 0 : getPlayer().getFoodStats().getSaturationLevel();
+    public float getSaturation() {
+        return player == null ? 0 : player.getFoodStats().getSaturationLevel();
     }
 
     /**
@@ -153,8 +117,8 @@ public class Player {
      *
      * @return the player's armor points
      */
-    public static int getArmorPoints() {
-        return getPlayer() == null ? 0 : getPlayer().getTotalArmorValue();
+    public int getArmorPoints() {
+        return player == null ? 0 : player.getTotalArmorValue();
     }
 
     /**
@@ -165,8 +129,8 @@ public class Player {
      *
      * @return the player's air level
      */
-    public static int getAirLevel() {
-        return getPlayer() == null ? 0 : getPlayer().getAir();
+    public int getAirLevel() {
+        return player == null ? 0 : player.getAir();
     }
 
     /**
@@ -174,8 +138,8 @@ public class Player {
      *
      * @return the player's xp level
      */
-    public static int getXPLevel() {
-        return getPlayer() == null ? 0 : getPlayer().experienceLevel;
+    public int getXPLevel() {
+        return player == null ? 0 : player.experienceLevel;
     }
 
     /**
@@ -183,8 +147,8 @@ public class Player {
      *
      * @return the player's xp progress
      */
-    public static float getXPProgress() {
-        return getPlayer() == null ? 0 : getPlayer().experience;
+    public float getXPProgress() {
+        return player == null ? 0 : player.experience;
     }
 
     /**
@@ -192,12 +156,12 @@ public class Player {
      *
      * @return the biome name
      */
-    public static String getBiome() {
-        if (getPlayer() == null)
+    public String getBiome() {
+        if (player == null)
             return "";
 
-        Chunk chunk = World.getWorld().getChunkFromBlockCoords(getPlayer().getPosition());
-        BiomeGenBase biome = chunk.getBiome(getPlayer().getPosition(),
+        Chunk chunk = World.getWorld().getChunkFromBlockCoords(player.getPosition());
+        BiomeGenBase biome = chunk.getBiome(player.getPosition(),
                 World.getWorld().getWorldChunkManager());
 
         return biome.biomeName;
@@ -208,10 +172,10 @@ public class Player {
      *
      * @return the light level at the player's current position
      */
-    public static int getLightLevel() {
-        if (getPlayer() == null || World.getWorld() == null) return 0;
+    public int getLightLevel() {
+        if (player == null || World.getWorld() == null) return 0;
 
-        return World.getWorld().getLight(getPlayer().getPosition());
+        return World.getWorld().getLight(player.getPosition());
     }
 
     /**
@@ -219,8 +183,8 @@ public class Player {
      *
      * @return true if the player is sneaking, false otherwise
      */
-    public static boolean isSneaking() {
-        return getPlayer() != null && getPlayer().isSneaking();
+    public boolean isSneaking() {
+        return player != null && player.isSneaking();
     }
 
     /**
@@ -228,8 +192,8 @@ public class Player {
      *
      * @return true if the player is sprinting, false otherwise
      */
-    public static boolean isSprinting() {
-        return getPlayer() != null && getPlayer().isSprinting();
+    public boolean isSprinting() {
+        return player != null && player.isSprinting();
     }
 
     /**
@@ -237,8 +201,8 @@ public class Player {
      *
      * @return true if the player is flying, false otherwise
      */
-    public static boolean isFlying() {
-        return !(getPlayer() != null && getPlayer().isPushedByWater());
+    public boolean isFlying() {
+        return !(player != null && player.isPushedByWater());
     }
 
     /**
@@ -246,8 +210,8 @@ public class Player {
      *
      * @return true if the player is sleeping, false otherwise
      */
-    public static boolean isSleeping() {
-        return getPlayer() != null && getPlayer().isPlayerSleeping();
+    public boolean isSleeping() {
+        return player != null && player.isPlayerSleeping();
     }
 
     /**
@@ -255,12 +219,12 @@ public class Player {
      *
      * @return The direction the player is facing, one of the four cardinal directions
      */
-    public static String facing() {
-        if (getPlayer() == null) {
+    public String facing() {
+        if (player == null) {
             return "";
         }
 
-        Float yaw = getYaw();
+        double yaw = getYaw();
 
         if (yaw < 22.5 && yaw > -22.5) {
             return "South";
@@ -288,12 +252,12 @@ public class Player {
      *
      * @return The player's active potion effects.
      */
-    public static String[] getActivePotionEffects() {
-        if (getPlayer() == null) return new String[]{};
+    public String[] getActivePotionEffects() {
+        if (player == null) return new String[]{};
 
         ArrayList<String> effects = new ArrayList<>();
 
-        for (PotionEffect effect : getPlayer().getActivePotionEffects()) {
+        for (PotionEffect effect : player.getActivePotionEffects()) {
             effects.add(effect.toString());
         }
 
@@ -307,8 +271,8 @@ public class Player {
      *
      * @return the {@link Block} or {@link Entity} being looked at
      */
-    public static Object lookingAt() {
-        if (getPlayer() == null
+    public Object lookingAt() {
+        if (player == null
                 || World.getWorld() == null
                 || Client.getMinecraft().objectMouseOver == null)
             return new Block(0);
@@ -330,8 +294,8 @@ public class Player {
      *
      * @return the item
      */
-    public static Item getHeldItem() {
-        return new Item(Player.getPlayer().inventory.getCurrentItem());
+    public Item getHeldItem() {
+        return new Item(player.inventory.getCurrentItem());
     }
 
     /**
@@ -339,8 +303,8 @@ public class Player {
      *
      * @return the player's inventory
      */
-    public static Inventory getInventory() {
-        return new Inventory(getPlayer().inventory);
+    public Inventory getInventory() {
+        return new Inventory(player.inventory);
     }
 
     /**
@@ -348,7 +312,7 @@ public class Player {
      * i.e. the name shown in tab list and in the player's nametag.
      * @return the display name
      */
-    public static TextComponent getDisplayName() {
+    public TextComponent getDisplayName() {
         return new TextComponent(getPlayerName(getPlayerInfo()));
     }
 
@@ -357,17 +321,18 @@ public class Player {
      *
      * @param textComponent the new name to display
      */
-    public static void setTabDisplayName(TextComponent textComponent) {
+    public void setTabDisplayName(TextComponent textComponent) {
         getPlayerInfo().setDisplayName(textComponent.getChatComponentText());
     }
 
-    private static String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn)
-    {
-        return networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
+    private String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn) {
+        return networkPlayerInfoIn.getDisplayName() != null
+                ? networkPlayerInfoIn.getDisplayName().getFormattedText()
+                : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
     }
 
-    public static NetworkPlayerInfo getPlayerInfo() {
-        return Client.getMinecraft().getNetHandler().getPlayerInfo(getPlayer().getUniqueID());
+    public NetworkPlayerInfo getPlayerInfo() {
+        return Client.getMinecraft().getNetHandler().getPlayerInfo(player.getUniqueID());
     }
 
     /**
@@ -375,36 +340,36 @@ public class Player {
      *
      * @return the currently opened inventory
      */
-    public static Inventory getOpenedInventory() {
-        return new Inventory(getPlayer().openContainer);
+    public Inventory getOpenedInventory() {
+        return new Inventory(player.openContainer);
     }
 
-    public static class armor {
+    private class Armor {
         /**
          * @return the item in the player's helmet slot
          */
-        public static Item getHelmet() {
+        public Item getHelmet() {
             return getInventory().getStackInSlot(39);
         }
 
         /**
          * @return the item in the player's chestplate slot
          */
-        public static Item getChestplate() {
+        public Item getChestplate() {
             return getInventory().getStackInSlot(38);
         }
 
         /**
          * @return the item in the player's leggings slot
          */
-        public static Item getLeggings() {
+        public Item getLeggings() {
             return getInventory().getStackInSlot(37);
         }
 
         /**
          * @return the item in the player's boots slot
          */
-        public static Item getBoots() {
+        public Item getBoots() {
             return getInventory().getStackInSlot(36);
         }
     }
