@@ -13,6 +13,7 @@ import com.chattriggers.ctjs.minecraft.listeners.ChatListener;
 import com.chattriggers.ctjs.minecraft.listeners.ClientListener;
 import com.chattriggers.ctjs.minecraft.listeners.WorldListener;
 import com.chattriggers.ctjs.minecraft.objects.CPS;
+import com.chattriggers.ctjs.minecraft.wrappers.Client;
 import com.chattriggers.ctjs.minecraft.wrappers.Player;
 import com.chattriggers.ctjs.triggers.TriggerType;
 import com.chattriggers.ctjs.utils.ImagesPack;
@@ -87,6 +88,7 @@ public class CTJS {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        new Player(Client.getMinecraft().thePlayer);
         this.displayHandler = new DisplayHandler();
         this.guiHandler = new GuiHandler();
         this.commandHandler = new CommandHandler();
